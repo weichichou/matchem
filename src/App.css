@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.board-div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 90vmin;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.card-div img {
+  height: 15vmin;
+  width: 15vmin;
+  margin: 1rem;
+}

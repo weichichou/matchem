@@ -1,6 +1,5 @@
 export interface CardData {
-  id: number;
-  index: number;
+  matchId: number;
   fold: boolean;
   img: string;
 }
