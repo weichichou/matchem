@@ -54,7 +54,7 @@ export default class Board extends React.Component<Props, State> {
         7: {
           matchId: 7,
           fold: true,
-          img: "/scarletteocat.jpg",
+          img: "/spidertocat.png",
         },
       },
 

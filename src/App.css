@@ -50,5 +50,7 @@
 .card-div img {
   height: 15vmin;
   width: 15vmin;
-  margin: 1rem;
+  margin: 0.5rem;
+  border: solid lightgray;
+  border-radius: 15px;
 }
