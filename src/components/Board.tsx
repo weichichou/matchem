@@ -2,7 +2,11 @@ import React from "react";
 import { CardData } from "../model";
 import Card from "./Card";
 type Props = {};
-type State = { cards: Record<number, CardData>; shuffledCards: Array<number> };
+type State = {
+  cards: Record<number, CardData>;
+  shuffledCards: Array<number>;
+  compareCards: Array<number>;
+};
 
 export default class Board extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -59,6 +63,7 @@ export default class Board extends React.Component<Props, State> {
       },
 
       shuffledCards: this.shuffle(cardNums),
+      compareCards: [],
     };
   }
 
@@ -72,6 +77,23 @@ export default class Board extends React.Component<Props, State> {
     return array;
   };
 
+  handleFlip = (matchId: number) => {
+    if (this.state.compareCards.length === 1) {
+      this.state.compareCards.push(matchId);
+      if (this.state.compareCards[0] === this.state.compareCards[1]) {
+        console.log("match!!!");
+        this.setState({ compareCards: [] });
+      } else {
+        console.log("not match!!!");
+        this.setState({ compareCards: [] });
+      }
+    } else {
+      this.state.compareCards.push(matchId);
+    }
+
+    console.log(matchId);
+  };
+
   render() {
     return (
       <div className="board-div">
@@ -82,6 +104,7 @@ export default class Board extends React.Component<Props, State> {
               matchId={theCard.matchId}
               fold={theCard.fold}
               img={theCard.img}
+              onFlip={this.handleFlip}
             />
           );
         })}
