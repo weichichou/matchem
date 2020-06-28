@@ -1,11 +1,11 @@
 import React from "react";
 import { CardData } from "../model";
-type Props = CardData & { onFlip: (matchId: number) => void };
+type Props = CardData & { id: number; onFlip: (matchId: number) => void };
 
 export default class Card extends React.Component<Props> {
-  state = {
-    flipped: false,
-  };
+  // state = {
+  //   flipped: false,
+  // };
 
   render() {
     // const flip = () => {
@@ -13,11 +13,8 @@ export default class Card extends React.Component<Props> {
     // };
 
     return (
-      <div
-        onClick={() => this.props.onFlip(this.props.matchId)}
-        className="scene"
-      >
-        <div className={`card ${this.state.flipped ? "flipped" : ""}`}>
+      <div onClick={() => this.props.onFlip(this.props.id)} className="scene">
+        <div className={`card ${!this.props.fold ? "flipped" : ""}`}>
           <div className="card_face front"></div>
           <div className="card_face back">
             <img src={this.props.img} />

@@ -4,8 +4,8 @@ import Card from "./Card";
 type Props = {};
 type State = {
   cards: Record<number, CardData>;
-  shuffledCards: Array<number>;
-  compareCards: Array<number>;
+  shuffledCards: Array<{ matchId: number; fold: boolean }>;
+  // compareCards: Array<number>;
 };
 
 export default class Board extends React.Component<Props, State> {
@@ -13,7 +13,7 @@ export default class Board extends React.Component<Props, State> {
     super(props);
     const cardNums = [];
     for (let i = 0; i < 8; i++) {
-      cardNums.push(i, i);
+      cardNums.push({ matchId: i, fold: true }, { matchId: i, fold: true });
     }
 
     this.state = {
@@ -63,11 +63,11 @@ export default class Board extends React.Component<Props, State> {
       },
 
       shuffledCards: this.shuffle(cardNums),
-      compareCards: [],
+      // compareCards: [],
     };
   }
 
-  shuffle = (array: Array<number>) => {
+  shuffle = (array: Array<{ matchId: number; fold: boolean }>) => {
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
       let temp = array[i];
@@ -77,32 +77,38 @@ export default class Board extends React.Component<Props, State> {
     return array;
   };
 
-  handleFlip = (matchId: number) => {
-    if (this.state.compareCards.length === 1) {
-      this.state.compareCards.push(matchId);
-      if (this.state.compareCards[0] === this.state.compareCards[1]) {
-        console.log("match!!!");
-        this.setState({ compareCards: [] });
-      } else {
-        console.log("not match!!!");
-        this.setState({ compareCards: [] });
-      }
-    } else {
-      this.state.compareCards.push(matchId);
-    }
+  handleFlip = (id: number) => {
+    let shuffledCards = [...this.state.shuffledCards];
+    let card = { ...shuffledCards[id], fold: false };
+    shuffledCards[id] = card;
+    this.setState({ shuffledCards });
+    // if (this.state.compareCards.length === 1) {
+    //   this.state.compareCards.push(matchId);
+    //   if (this.state.compareCards[0] === this.state.compareCards[1]) {
+    //     console.log("match!!!");
+    //     this.setState({ compareCards: [] });
+    //   } else {
+    //     console.log("not match!!!");
+    //     this.setState({ compareCards: [] });
+    //   }
+    // } else {
+    //   this.state.compareCards.push(matchId);
+    // }
 
-    console.log(matchId);
+    console.log(id);
   };
 
   render() {
+    console.log("shuffledCards", this.state.shuffledCards);
     return (
       <div className="board-div">
-        {this.state.shuffledCards.map((id) => {
-          let theCard = this.state.cards[id];
+        {this.state.shuffledCards.map((card, index) => {
+          let theCard = this.state.cards[card.matchId];
           return (
             <Card
-              matchId={theCard.matchId}
-              fold={theCard.fold}
+              id={index}
+              matchId={card.matchId}
+              fold={card.fold}
               img={theCard.img}
               onFlip={this.handleFlip}
             />
