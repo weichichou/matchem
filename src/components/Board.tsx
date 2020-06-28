@@ -1,11 +1,9 @@
 import React from "react";
-import { CardData } from "../model";
 import Card from "./Card";
 type Props = {};
 type State = {
-  cards: Record<number, CardData>;
-  shuffledCards: Array<{ matchId: number; fold: boolean }>;
-  // compareCards: Array<number>;
+  cards: Record<number, { matchId: number; img: string }>;
+  shuffledCards: Array<{ matchId: number; fold: boolean; outOfGame: boolean }>;
 };
 
 export default class Board extends React.Component<Props, State> {
@@ -13,61 +11,55 @@ export default class Board extends React.Component<Props, State> {
     super(props);
     const cardNums = [];
     for (let i = 0; i < 8; i++) {
-      cardNums.push({ matchId: i, fold: true }, { matchId: i, fold: true });
+      cardNums.push(
+        { matchId: i, fold: true, outOfGame: false },
+        { matchId: i, fold: true, outOfGame: false }
+      );
     }
 
     this.state = {
       cards: {
         0: {
           matchId: 0,
-
-          fold: true,
           img: "/constructocat2.jpg",
         },
         1: {
           matchId: 1,
-
-          fold: true,
           img: "/waldocat.png",
         },
         2: {
           matchId: 2,
-          fold: true,
           img: "/stormtroopocat.png",
         },
         3: {
           matchId: 3,
-          fold: true,
           img: "/pusheencat.png",
         },
         4: {
           matchId: 4,
-          fold: true,
           img: "/linktocat.jpg",
         },
         5: {
           matchId: 5,
-          fold: true,
           img: "/plumber.jpg",
         },
         6: {
           matchId: 6,
-          fold: true,
           img: "/original.png",
         },
         7: {
           matchId: 7,
-          fold: true,
           img: "/spidertocat.png",
         },
       },
 
       shuffledCards: this.shuffle(cardNums),
-      // compareCards: [],
     };
   }
 
-  shuffle = (array: Array<{ matchId: number; fold: boolean }>) => {
+  shuffle = (
+    array: Array<{ matchId: number; fold: boolean; outOfGame: boolean }>
+  ) => {
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
       let temp = array[i];
@@ -82,20 +74,47 @@ export default class Board extends React.Component<Props, State> {
     let card = { ...shuffledCards[id], fold: false };
     shuffledCards[id] = card;
     this.setState({ shuffledCards });
-    // if (this.state.compareCards.length === 1) {
-    //   this.state.compareCards.push(matchId);
-    //   if (this.state.compareCards[0] === this.state.compareCards[1]) {
-    //     console.log("match!!!");
-    //     this.setState({ compareCards: [] });
-    //   } else {
-    //     console.log("not match!!!");
-    //     this.setState({ compareCards: [] });
-    //   }
-    // } else {
-    //   this.state.compareCards.push(matchId);
-    // }
 
-    console.log(id);
+    if (
+      shuffledCards
+        .filter((card) => !card.outOfGame)
+        .filter((card) => !card.fold).length === 2
+    ) {
+      let indexes: number[] = [];
+      for (let i = 0; i < shuffledCards.length; i++) {
+        if (!shuffledCards[i].fold && !shuffledCards[i].outOfGame) {
+          indexes.push(i);
+        }
+      }
+      setTimeout(() => {
+        this.handleCheck(indexes[0], indexes[1]);
+        indexes = [];
+      }, 1000);
+    }
+  };
+
+  handleCheck = (index1: number, index2: number) => {
+    console.log("checking?");
+    if (
+      this.state.shuffledCards[index1].matchId ===
+      this.state.shuffledCards[index2].matchId
+    ) {
+      console.log("match!");
+      let shuffledCards = [...this.state.shuffledCards];
+      let card1 = { ...shuffledCards[index1], outOfGame: true };
+      let card2 = { ...shuffledCards[index2], outOfGame: true };
+      shuffledCards[index1] = card1;
+      shuffledCards[index2] = card2;
+      this.setState({ shuffledCards });
+    } else {
+      console.log("not match!!");
+      let shuffledCards = [...this.state.shuffledCards];
+      let card1 = { ...shuffledCards[index1], fold: true };
+      let card2 = { ...shuffledCards[index2], fold: true };
+      shuffledCards[index1] = card1;
+      shuffledCards[index2] = card2;
+      this.setState({ shuffledCards });
+    }
   };
 
   render() {
