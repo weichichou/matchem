@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "./Card";
+import Countdown from "./Countdown";
 type Props = {};
 type State = {
   cards: Record<number, { matchId: number; img: string }>;
@@ -125,7 +126,7 @@ export default class Board extends React.Component<Props, State> {
     return (
       <div>
         <div className="top-div">
-          <div>Time</div>
+          <Countdown />
           <h1>Match 'em!</h1>
           <div>Score: {this.state.score}</div>
         </div>
