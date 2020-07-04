@@ -4,6 +4,7 @@ type Props = {};
 type State = {
   cards: Record<number, { matchId: number; img: string }>;
   shuffledCards: Array<{ matchId: number; fold: boolean; outOfGame: boolean }>;
+  points: number;
 };
 
 export default class Board extends React.Component<Props, State> {
@@ -54,6 +55,7 @@ export default class Board extends React.Component<Props, State> {
       },
 
       shuffledCards: this.shuffle(cardNums),
+      points: 0,
     };
   }
 
@@ -100,6 +102,7 @@ export default class Board extends React.Component<Props, State> {
       this.state.shuffledCards[index2].matchId
     ) {
       console.log("match!");
+      this.setState({ points: this.state.points + 1 });
       let shuffledCards = [...this.state.shuffledCards];
       let card1 = { ...shuffledCards[index1], outOfGame: true };
       let card2 = { ...shuffledCards[index2], outOfGame: true };
@@ -120,19 +123,22 @@ export default class Board extends React.Component<Props, State> {
   render() {
     console.log("shuffledCards", this.state.shuffledCards);
     return (
-      <div className="board-div">
-        {this.state.shuffledCards.map((card, index) => {
-          let theCard = this.state.cards[card.matchId];
-          return (
-            <Card
-              id={index}
-              matchId={card.matchId}
-              fold={card.fold}
-              img={theCard.img}
-              onFlip={this.handleFlip}
-            />
-          );
-        })}
+      <div>
+        <div className="point-div">Points: {this.state.points}</div>
+        <div className="board-div">
+          {this.state.shuffledCards.map((card, index) => {
+            let theCard = this.state.cards[card.matchId];
+            return (
+              <Card
+                id={index}
+                matchId={card.matchId}
+                fold={card.fold}
+                img={theCard.img}
+                onFlip={this.handleFlip}
+              />
+            );
+          })}
+        </div>{" "}
       </div>
     );
   }
