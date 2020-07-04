@@ -4,7 +4,7 @@ type Props = {};
 type State = {
   cards: Record<number, { matchId: number; img: string }>;
   shuffledCards: Array<{ matchId: number; fold: boolean; outOfGame: boolean }>;
-  points: number;
+  score: number;
 };
 
 export default class Board extends React.Component<Props, State> {
@@ -55,7 +55,7 @@ export default class Board extends React.Component<Props, State> {
       },
 
       shuffledCards: this.shuffle(cardNums),
-      points: 0,
+      score: 0,
     };
   }
 
@@ -102,7 +102,7 @@ export default class Board extends React.Component<Props, State> {
       this.state.shuffledCards[index2].matchId
     ) {
       console.log("match!");
-      this.setState({ points: this.state.points + 1 });
+      this.setState({ score: this.state.score + 1 });
       let shuffledCards = [...this.state.shuffledCards];
       let card1 = { ...shuffledCards[index1], outOfGame: true };
       let card2 = { ...shuffledCards[index2], outOfGame: true };
@@ -124,7 +124,11 @@ export default class Board extends React.Component<Props, State> {
     console.log("shuffledCards", this.state.shuffledCards);
     return (
       <div>
-        <div className="point-div">Points: {this.state.points}</div>
+        <div className="top-div">
+          <div>Time</div>
+          <h1>Match 'em!</h1>
+          <div>Score: {this.state.score}</div>
+        </div>
         <div className="board-div">
           {this.state.shuffledCards.map((card, index) => {
             let theCard = this.state.cards[card.matchId];

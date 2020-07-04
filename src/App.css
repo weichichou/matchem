@@ -37,6 +37,12 @@
   }
 }
 
+.top-div {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+}
+
 .board-div {
   display: flex;
   flex-direction: row;
