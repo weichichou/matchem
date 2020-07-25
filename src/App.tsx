@@ -2,9 +2,10 @@ import React from "react";
 import "./App.css";
 import Card from "./components/Card";
 import Countdown from "./components/Countdown";
+import cardSuits from "./components/cardSuits";
+
 type Props = {};
 type State = {
-  cards: Record<number, { matchId: number; img: string }>;
   shuffledCards: Array<{ matchId: number; fold: boolean; outOfGame: boolean }>;
   score: number;
 };
@@ -21,41 +22,6 @@ export default class App extends React.Component<Props, State> {
     }
 
     this.state = {
-      cards: {
-        0: {
-          matchId: 0,
-          img: "/constructocat2.jpg",
-        },
-        1: {
-          matchId: 1,
-          img: "/waldocat.png",
-        },
-        2: {
-          matchId: 2,
-          img: "/stormtroopocat.png",
-        },
-        3: {
-          matchId: 3,
-          img: "/pusheencat.png",
-        },
-        4: {
-          matchId: 4,
-          img: "/linktocat.jpg",
-        },
-        5: {
-          matchId: 5,
-          img: "/plumber.jpg",
-        },
-        6: {
-          matchId: 6,
-          img: "/original.png",
-        },
-        7: {
-          matchId: 7,
-          img: "/spidertocat.png",
-        },
-      },
-
       shuffledCards: this.shuffle(cardNums),
       score: 0,
     };
@@ -123,7 +89,7 @@ export default class App extends React.Component<Props, State> {
   };
 
   render() {
-    console.log("shuffledCards", this.state.shuffledCards);
+    //console.log("shuffledCards", this.state.shuffledCards);
     return (
       <div>
         <header>
@@ -133,18 +99,17 @@ export default class App extends React.Component<Props, State> {
         </header>
         <div className="board-div">
           {this.state.shuffledCards.map((card, index) => {
-            let theCard = this.state.cards[card.matchId];
             return (
               <Card
                 id={index}
                 matchId={card.matchId}
                 fold={card.fold}
-                img={theCard.img}
+                img={cardSuits[card.matchId]}
                 onFlip={this.handleFlip}
               />
             );
           })}
-        </div>{" "}
+        </div>
       </div>
     );
   }
