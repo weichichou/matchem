@@ -13,7 +13,7 @@ export default function Card(props: Props) {
       <div className={`card ${!props.fold ? "flipped" : ""}`}>
         <div className="card_face front"></div>
         <div className="card_face back">
-          <img src={props.img} />
+          <img src={props.img} alt="cardsuit" />
         </div>
       </div>
     </div>
