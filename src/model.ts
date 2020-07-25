@@ -1,5 +1,10 @@
 export interface CardData {
   matchId: number;
-  fold: boolean;
   img: string;
+}
+
+export interface CardState {
+  matchId: number;
+  fold: boolean;
+  outOfGame: boolean;
 }
