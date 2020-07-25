@@ -6,23 +6,23 @@ import cardSuits from "./components/cardSuits";
 
 type Props = {};
 type State = {
-  shuffledCards: Array<{ matchId: number; fold: boolean; outOfGame: boolean }>;
+  cards: Array<{ matchId: number; fold: boolean; outOfGame: boolean }>;
   score: number;
 };
 
 export default class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    const cardNums = [];
+    const initialCards = [];
     for (let i = 0; i < 8; i++) {
-      cardNums.push(
+      initialCards.push(
         { matchId: i, fold: true, outOfGame: false },
         { matchId: i, fold: true, outOfGame: false }
       );
     }
 
     this.state = {
-      shuffledCards: this.shuffle(cardNums),
+      cards: this.shuffle(initialCards),
       score: 0,
     };
   }
@@ -40,19 +40,18 @@ export default class App extends React.Component<Props, State> {
   };
 
   handleFlip = (id: number) => {
-    let shuffledCards = [...this.state.shuffledCards];
-    let card = { ...shuffledCards[id], fold: false };
-    shuffledCards[id] = card;
-    this.setState({ shuffledCards });
+    let cards = [...this.state.cards];
+    let card = { ...cards[id], fold: false };
+    cards[id] = card;
+    this.setState({ cards });
 
     if (
-      shuffledCards
-        .filter((card) => !card.outOfGame)
-        .filter((card) => !card.fold).length === 2
+      cards.filter((card) => !card.outOfGame).filter((card) => !card.fold)
+        .length === 2
     ) {
       let indexes: number[] = [];
-      for (let i = 0; i < shuffledCards.length; i++) {
-        if (!shuffledCards[i].fold && !shuffledCards[i].outOfGame) {
+      for (let i = 0; i < cards.length; i++) {
+        if (!cards[i].fold && !cards[i].outOfGame) {
           indexes.push(i);
         }
       }
@@ -65,31 +64,28 @@ export default class App extends React.Component<Props, State> {
 
   handleCheck = (index1: number, index2: number) => {
     console.log("checking?");
-    if (
-      this.state.shuffledCards[index1].matchId ===
-      this.state.shuffledCards[index2].matchId
-    ) {
+    if (this.state.cards[index1].matchId === this.state.cards[index2].matchId) {
       console.log("match!");
       this.setState({ score: this.state.score + 1 });
-      let shuffledCards = [...this.state.shuffledCards];
-      let card1 = { ...shuffledCards[index1], outOfGame: true };
-      let card2 = { ...shuffledCards[index2], outOfGame: true };
-      shuffledCards[index1] = card1;
-      shuffledCards[index2] = card2;
-      this.setState({ shuffledCards });
+      let cards = [...this.state.cards];
+      let card1 = { ...cards[index1], outOfGame: true };
+      let card2 = { ...cards[index2], outOfGame: true };
+      cards[index1] = card1;
+      cards[index2] = card2;
+      this.setState({ cards });
     } else {
       console.log("not match!!");
-      let shuffledCards = [...this.state.shuffledCards];
-      let card1 = { ...shuffledCards[index1], fold: true };
-      let card2 = { ...shuffledCards[index2], fold: true };
-      shuffledCards[index1] = card1;
-      shuffledCards[index2] = card2;
-      this.setState({ shuffledCards });
+      let cards = [...this.state.cards];
+      let card1 = { ...cards[index1], fold: true };
+      let card2 = { ...cards[index2], fold: true };
+      cards[index1] = card1;
+      cards[index2] = card2;
+      this.setState({ cards });
     }
   };
 
   render() {
-    //console.log("shuffledCards", this.state.shuffledCards);
+    //console.log("cards", this.state.cards);
     return (
       <div>
         <header>
@@ -98,7 +94,7 @@ export default class App extends React.Component<Props, State> {
           <div>Score: {this.state.score}</div>
         </header>
         <div className="board-div">
-          {this.state.shuffledCards.map((card, index) => {
+          {this.state.cards.map((card, index) => {
             return (
               <Card
                 id={index}
