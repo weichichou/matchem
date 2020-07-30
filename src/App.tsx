@@ -45,13 +45,13 @@ export default function App() {
         }
       }
       setTimeout(() => {
-        handleCheck(indexes[0], indexes[1]);
+        check(indexes[0], indexes[1]);
         indexes = [];
       }, 1000);
     }
   }
 
-  function handleCheck(index1: number, index2: number): void {
+  function check(index1: number, index2: number): void {
     if (cards[index1].matchId === cards[index2].matchId) {
       setScore(score + 1);
       let updatedCards = [...cards];
