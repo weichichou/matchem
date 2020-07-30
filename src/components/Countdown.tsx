@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 export default function Countdown() {
+  const [sec, setSec] = useState(29);
+  const [started, setStarted] = useState(false);
   let targetTime: number;
   function getTargetTime() {
+    setStarted(true);
     let start = Date.now();
     targetTime = start + 30000;
     console.log("targetTime", targetTime);
@@ -10,7 +13,7 @@ export default function Countdown() {
   }
 
   function countdown() {
-    const id = setInterval(calculateRemainingTime, 500);
+    const id = setInterval(calculateRemainingTime, 200);
     function calculateRemainingTime() {
       const difference = targetTime - Date.now();
 
@@ -18,6 +21,7 @@ export default function Countdown() {
         clearInterval(id);
         console.log("time up");
       } else {
+        setSec(Math.floor(difference / 1000));
         console.log("difference", difference);
       }
     }
@@ -25,7 +29,11 @@ export default function Countdown() {
 
   return (
     <div>
-      <button onClick={getTargetTime}>Start</button>
+      {started ? (
+        <div>{sec < 10 ? `0${sec}` : sec}</div>
+      ) : (
+        <button onClick={getTargetTime}>Start</button>
+      )}
     </div>
   );
 }
