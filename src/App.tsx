@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./App.css";
 import { CardState } from "./model";
 import Card from "./components/Card";
-import Countdown from "./components/Countdown";
 import cardSuits from "./components/cardSuits";
 
 export default function App() {
@@ -13,7 +12,10 @@ export default function App() {
       { matchId: i, fold: true, outOfGame: false }
     );
   }
+
   const [cards, setCards] = useState(shuffle(initialCards));
+  const [game, setGame] = useState("initial");
+  const [sec, setSec]: [number, (sec: number) => void] = useState(30);
   const [score, setScore]: [number, (score: number) => void] = useState(0);
 
   // function functionName(parameter: parameter's type): return's type { function body }
@@ -70,10 +72,32 @@ export default function App() {
     }
   }
 
+  let targetTime: number;
+
+  function getTargetTime(): void {
+    let start = Date.now();
+    targetTime = start + 30000;
+    countdown();
+  }
+
+  function countdown(): void {
+    const id = setInterval(calculateRemainingTime, 200);
+    function calculateRemainingTime() {
+      const difference = targetTime - Date.now();
+
+      if (difference <= 0) {
+        clearInterval(id);
+        setGame("timeup");
+      } else {
+        setSec(Math.floor(difference / 1000));
+      }
+    }
+  }
+
   return (
     <div>
       <header>
-        <Countdown />
+        <div>{sec < 10 ? `0${sec}` : sec}</div>
         <h1>Match 'em!</h1>
         <div>Score: {score}</div>
       </header>
@@ -91,6 +115,27 @@ export default function App() {
           );
         })}
       </div>
+      {game === "started" ? (
+        ""
+      ) : (
+        <div id="overlay">
+          <div
+            onClick={() => {
+              setGame("started");
+              getTargetTime();
+            }}
+            id="overlay-text"
+          >
+            {game === "initial" && "Start Game"}
+            {game === "timeup" && (
+              <div>
+                <p>Time's Up!</p>
+                <p className="small-text">play again</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
