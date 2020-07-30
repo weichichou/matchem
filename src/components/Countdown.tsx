@@ -1,13 +1,31 @@
 import React, { useState, useEffect } from "react";
 
 export default function Countdown() {
-  const [counter, setCounter] = useState(30);
+  let targetTime: number;
+  function getTargetTime() {
+    let start = Date.now();
+    targetTime = start + 30000;
+    console.log("targetTime", targetTime);
+    countdown();
+  }
 
-  useEffect(() => {
-    const timer =
-      counter >= 0 && setTimeout(() => setCounter(counter - 1), 1000);
-    const timeUp = counter < 0 && console.log("time up!");
-  });
+  function countdown() {
+    const id = setInterval(calculateRemainingTime, 500);
+    function calculateRemainingTime() {
+      const difference = targetTime - Date.now();
 
-  return <div>{counter >= 0 ? counter : 0}</div>;
+      if (difference <= 0) {
+        clearInterval(id);
+        console.log("time up");
+      } else {
+        console.log("difference", difference);
+      }
+    }
+  }
+
+  return (
+    <div>
+      <button onClick={getTargetTime}>Start</button>
+    </div>
+  );
 }
