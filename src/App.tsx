@@ -97,9 +97,18 @@ export default function App() {
   return (
     <div>
       <header>
-        <div>{sec < 10 ? `0${sec}` : sec}</div>
+        <div>
+          <img
+            src="/clock.png"
+            alt="Historical icon by Icons8, https://icons8.com"
+          />
+          <span>{sec < 10 ? `0${sec}` : sec}</span>
+        </div>
         <h1>Match 'em!</h1>
-        <div>Score: {score}</div>
+        <div>
+          <img src="/goal.png" alt="Goal icon by Icons8, https://icons8.com" />
+          <span> {score}</span>
+        </div>
       </header>
       <div className="board-div">
         {cards.map((card, index) => {

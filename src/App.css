@@ -102,3 +102,11 @@ header {
   text-align: center;
   font-size: 2rem;
 }
+
+header img {
+  height: 1rem;
+}
+
+header span {
+  font-size: 1.25rem;
+}
