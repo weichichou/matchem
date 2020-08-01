@@ -22,4 +22,4 @@ This is a match'em game for TypeScript practice purpose.
 - TypeScript
 - React Hooks
 
-The frontend was scaffolded using the vue-create cli. [See the standard create-react docs](./create-react-app-docs.md).
+This project was scaffolded using the create-react-app cli. [See the standard create-react docs](./create-react-app-docs.md).
