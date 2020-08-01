@@ -42,6 +42,10 @@ header {
   transform-style: preserve-3d;
 }
 
+.card:hover {
+  cursor: pointer;
+}
+
 .card_face {
   position: absolute;
   height: 100%;
